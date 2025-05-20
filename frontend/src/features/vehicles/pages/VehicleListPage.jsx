@@ -9,15 +9,32 @@ import Table from "../../../components/common/organisms/Table"
 import FormField from "../../../components/common/molecules/FormField"
 import Alert from "../../../components/common/atoms/Alert"
 import { TruckIcon, PlusIcon, XIcon } from "lucide-react"
+import { vehicleService } from "../../../services/vehicleService"
 
 const VehicleListPage = () => {
-  const { data: vehicles, isLoading } = useAllVehicles()
-  const [showAddForm, setShowAddForm] = useState(false)
+
+   const { data: vehicles, isLoading, refetch } = useAllVehicles();
+  const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
     plateNumber: ""
-  })
-  const [errors, setErrors] = useState({})
+  });
+  const [errors, setErrors] = useState({});
 
+  const handleAddVehicle = async () => {
+    if (!validateForm()) return;
+    
+    try {
+      await vehicleService.createVehicle(formData);
+      setFormData({ plateNumber: "" });
+      setShowAddForm(false);
+      refetch(); // Refresh the vehicles list
+    } catch (error) {
+      setErrors({
+        general: error.message || "Failed to add vehicle"
+      });
+    }
+  };
+  
   const createVehicleMutation = useCreateVehicle()
 
   const handleChange = (e) => {
@@ -78,36 +95,44 @@ const VehicleListPage = () => {
       header: "Actions",
       cell: (row) => (
         <div className="flex space-x-2">
-          <Link to={`/vehicles/${row.id}`}>
+          {/* <Link to={`/vehicles/${row.id}`}>
             <Button size="sm" variant="secondary">
               View
             </Button>
-          </Link>
-          <Link to="/bookings/new" state={{ vehicleId: row.id }}>
+          </Link> */}
+          {/* <Link to="/bookings/new" state={{ vehicleId: row.id }}>
             <Button size="sm">Book Parking</Button>
-          </Link>
+          </Link> */}
         </div>
       ),
     },
   ]
 
+  
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-900">Your Vehicles</h1>
-        <Button onClick={() => setShowAddForm(!showAddForm)}>
-          {showAddForm ? (
-            <>
-              <XIcon className="h-5 w-5 mr-1" />
-              Cancel
-            </>
-          ) : (
-            <>
-              <PlusIcon className="h-5 w-5 mr-1" />
-              Add Vehicle
-            </>
-          )}
-        </Button>
+        <Button onClick={() => {
+        if (showAddForm) {
+          setShowAddForm(false);
+        } else {
+          setShowAddForm(true);
+        }
+      }}>
+        {showAddForm ? (
+          <>
+            <XIcon className="h-5 w-5 mr-1" />
+            Cancel
+          </>
+        ) : (
+          <>
+            <PlusIcon className="h-5 w-5 mr-1" />
+            Add Vehicle
+          </>
+        )}
+      </Button>
       </div>
 
       {showAddForm && (
@@ -122,7 +147,10 @@ const VehicleListPage = () => {
               </Alert>
             )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleAddVehicle();
+            }}>
               <div className="grid grid-cols-1 gap-4">
                 <FormField
                   label="Plate Number"
@@ -136,7 +164,7 @@ const VehicleListPage = () => {
               </div>
 
               <div className="mt-4 flex justify-end">
-                <Button type="submit" isLoading={createVehicleMutation.isLoading}>
+                <Button type="submit">
                   Add Vehicle
                 </Button>
               </div>

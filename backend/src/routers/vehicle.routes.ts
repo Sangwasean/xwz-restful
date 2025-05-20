@@ -2,7 +2,6 @@
 import { Router } from 'express';
 import vehicleController from '../controllers/vehicle.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
-import { roleMiddleware } from '../middlewares/role.middleware';
 
 const router = Router();
 
@@ -11,7 +10,7 @@ router.post('/', authMiddleware, vehicleController.createVehicle);
 // In vehicle.routes.ts
 router.get(
     "/",
-    authMiddleware,// Only admins can view all vehicles
+    authMiddleware,
     vehicleController.getAllVehicles
 );
 router.get('/:id', authMiddleware, vehicleController.getVehicleById);

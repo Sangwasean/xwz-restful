@@ -2,23 +2,13 @@ import api from "./api";
 
 export const vehicleService = {
   getAllVehicles: async () => {
-    try {
-      const response = await api.get("/vehicles", {
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-        timeout: 10000 // 10 second timeout
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching vehicles:", error);
-      if (error.response?.status === 401) {
-        // Token expired or invalid
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+    const token = localStorage.getItem('token');
+    const response = await api.get("/vehicles", {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-      throw error;
-    }
+    });
+    return response.data;
   },
 
   getVehicleById: async (id) => {
