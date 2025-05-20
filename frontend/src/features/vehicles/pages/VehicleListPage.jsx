@@ -56,27 +56,32 @@ const VehicleListPage = () => {
   };
 
   const columns = [
-    {
-      header: "Plate Number",
-      accessor: "plateNumber",
-      cell: (row) => (
-        <Link to={`/vehicles/${row.id}`} className="text-blue-600 hover:text-blue-800 font-medium">
-          {row.plateNumber}
-        </Link>
-      ),
-    },
-    {
-      header: "Added On",
-      accessor: "createdAt",
-      cell: (row) => <span>{new Date(row.createdAt).toLocaleDateString()}</span>,
-    },
-    {
-      header: "Actions",
-      cell: (row) => (
-        <div className="flex space-x-2"></div>
-      ),
-    },
-  ]
+  {
+    header: "Plate Number",
+    accessor: "plateNumber",
+    cell: (value, row) => (
+      <Link to={`/vehicles/${row.id}`} className="text-blue-600 hover:text-blue-800 font-medium">
+        {value}
+      </Link>
+    ),
+  },
+  {
+    header: "Added On",
+    accessor: "createdAt",
+    cell: (value) => (
+      <span>{new Date(value).toLocaleDateString()}</span>
+    ),
+  },
+  {
+    header: "Actions",
+    cell: (_, row) => (
+      <div className="flex space-x-2">
+        {/* Add any action buttons here */}
+      </div>
+    ),
+  },
+];
+
 
   return (
     <div>
