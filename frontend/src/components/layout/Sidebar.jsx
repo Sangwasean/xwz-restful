@@ -13,7 +13,7 @@ const Sidebar = () => {
   return (
     <div className="h-full bg-gray-800 w-64 flex-shrink-0">
       <div className="h-16 flex items-center justify-center">
-        <h2 className="text-white text-xl font-semibold">Parking System</h2>
+        <h2 className="text-white text-xl font-semibold">XWZ LTD PMS</h2>
       </div>
       <nav className="mt-5 px-2">
         {navItems.map((item) => (

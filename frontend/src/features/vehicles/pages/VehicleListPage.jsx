@@ -12,36 +12,18 @@ import { TruckIcon, PlusIcon, XIcon } from "lucide-react"
 import { vehicleService } from "../../../services/vehicleService"
 
 const VehicleListPage = () => {
-
-   const { data: vehicles, isLoading, refetch } = useAllVehicles();
+  const { data: vehicles, isLoading, refetch } = useAllVehicles();
   const [showAddForm, setShowAddForm] = useState(false);
-  const [formData, setFormData] = useState({
-    plateNumber: ""
-  });
+  const [formData, setFormData] = useState({ plateNumber: "" });
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleAddVehicle = async () => {
-    if (!validateForm()) return;
-    
-    try {
-      await vehicleService.createVehicle(formData);
-      setFormData({ plateNumber: "" });
-      setShowAddForm(false);
-      refetch(); // Refresh the vehicles list
-    } catch (error) {
-      setErrors({
-        general: error.message || "Failed to add vehicle"
-      });
-    }
-  };
-  
   const createVehicleMutation = useCreateVehicle()
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear error when user types
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -49,32 +31,29 @@ const VehicleListPage = () => {
 
   const validateForm = () => {
     const newErrors = {}
-
     if (!formData.plateNumber) {
       newErrors.plateNumber = "Plate number is required"
     }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
+  const handleAddVehicle = async () => {
     if (!validateForm()) return
 
     try {
-      await createVehicleMutation.mutateAsync(formData)
-      setFormData({ plateNumber: "" })
-      setShowAddForm(false)
+      await vehicleService.createVehicle(formData);
+      setFormData({ plateNumber: "" });
+      setShowAddForm(false);
+      setSuccessMessage("Vehicle successfully created!");
+      refetch();
+      setTimeout(() => setSuccessMessage(""), 3000); // Auto-hide after 3 seconds
     } catch (error) {
-      if (error.response && error.response.data) {
-        setErrors({ general: error.response.data.message || "Failed to add vehicle" })
-      } else {
-        setErrors({ general: "An error occurred. Please try again." })
-      }
+      setErrors({
+        general: error.message || "Failed to add vehicle"
+      });
     }
-  }
+  };
 
   const columns = [
     {
@@ -94,46 +73,35 @@ const VehicleListPage = () => {
     {
       header: "Actions",
       cell: (row) => (
-        <div className="flex space-x-2">
-          {/* <Link to={`/vehicles/${row.id}`}>
-            <Button size="sm" variant="secondary">
-              View
-            </Button>
-          </Link> */}
-          {/* <Link to="/bookings/new" state={{ vehicleId: row.id }}>
-            <Button size="sm">Book Parking</Button>
-          </Link> */}
-        </div>
+        <div className="flex space-x-2"></div>
       ),
     },
   ]
-
-  
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-900">Your Vehicles</h1>
-        <Button onClick={() => {
-        if (showAddForm) {
-          setShowAddForm(false);
-        } else {
-          setShowAddForm(true);
-        }
-      }}>
-        {showAddForm ? (
-          <>
-            <XIcon className="h-5 w-5 mr-1" />
-            Cancel
-          </>
-        ) : (
-          <>
-            <PlusIcon className="h-5 w-5 mr-1" />
-            Add Vehicle
-          </>
-        )}
-      </Button>
+        <Button onClick={() => setShowAddForm((prev) => !prev)}>
+          {showAddForm ? (
+            <>
+              <XIcon className="h-5 w-5 mr-1" />
+              Cancel
+            </>
+          ) : (
+            <>
+              <PlusIcon className="h-5 w-5 mr-1" />
+              Add Vehicle
+            </>
+          )}
+        </Button>
       </div>
+
+      {successMessage && (
+        <Alert variant="success" className="mb-4">
+          {successMessage}
+        </Alert>
+      )}
 
       {showAddForm && (
         <Card className="mb-6">
