@@ -1,0 +1,24 @@
+{
+  "firstName": "lars",
+  "lastName": "ken",
+  "email": "lars.ken@gmail.com",
+  "password": "password123",
+  "role": "ADMIN"
+}
+
+
+{
+  "firstName": "jack",
+  "lastName": "money",
+  "email": "jackmoney@example.com",
+  "password": "password123",
+  "role": "PARKING_ATTENDANT"
+}
+
+
+{
+  "parkingId": "clxyz1234567890abcdefghij",
+  "vehicleId": "clabc1234567890abcdefghij",
+  "startTime": "2023-11-15T10:00:00Z",
+  "expectedHours": 2
+}

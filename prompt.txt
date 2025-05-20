@@ -1,0 +1,5 @@
+i have a frontend folder that i created using 
+
+npm create vite@latest my-react-app --template react
+
+i just copied and pasted it into my other project how do i run it effectively

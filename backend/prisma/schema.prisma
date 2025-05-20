@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PARKING_ATTENDANT
+  ADMIN
+  
+}
+
+
+enum TicketStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id          String      @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String      @unique
+  password    String
+  role        Role        @default(PARKING_ATTENDANT)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
+  tickets    Ticket[]   @relation("UserTickets")
+  payments    Payment[]
+  vehicles    Vehicle[]   // Renamed for clarity
+}
+
+model Vehicle {
+  id           String         @id @default(uuid())
+  plateNumber  String         @unique
+  userId       String
+  user         User           @relation(fields: [userId], references: [id])
+  parking Parking[]
+  tickets     Ticket[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Parking {
+  id          String      @id @default(uuid())
+  location    String
+  name      String      @unique
+  isAvailable Boolean     @default(true)
+  fee         Float
+  vehicleId   String?     @unique
+  vehicle     Vehicle?    @relation(fields: [vehicleId], references: [id])
+  tickets    Ticket[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Ticket {
+  id            String       @id @default(uuid())
+  parkingId String
+  parking   Parking  @relation(fields: [parkingId], references: [id])
+  vehicleId     String
+  vehicle       Vehicle      @relation(fields: [vehicleId], references: [id])
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], name: "UserTickets")
+  startTime     DateTime     
+  endTime       DateTime?
+  status        TicketStatus @default(ACTIVE) 
+  payment       Payment?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Payment {
+  id        String         @id @default(uuid())
+  amount    Float
+  ticketId String         @unique
+  ticket   Ticket        @relation(fields: [ticketId], references: [id])
+  userId    String
+  user      User           @relation(fields: [userId], references: [id])
+  status    PaymentStatus  @default(PENDING)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}

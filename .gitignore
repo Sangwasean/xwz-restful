@@ -1,0 +1,96 @@
+# General
+.DS_Store
+*.log
+logs
+*.pid
+*.seed
+*.pid.lock
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Dependency directories (handled separately for frontend/backend)
+# Don't ignore root node_modules if you have any
+!**/node_modules/
+
+# Cache directories
+.cache
+.turbo
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-debug.log
+.yarn-integrity
+
+# Build directories
+dist/
+build/
+out/
+.next/
+.nuxt/
+.serverless/
+.temp/
+.tmp/
+.vuepress/dist/
+storybook-static/
+
+# Backend specific (NestJS)
+backend/.env
+backend/.env.*
+!backend/.env.example
+backend/coverage/
+backend/*.tsbuildinfo
+backend/ormconfig.json
+backend/*.compiled.js
+backend/*.d.ts
+backend/*.js.map
+backend/*.d.ts.map
+
+# Frontend specific (React)
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+frontend/.eslintcache
+frontend/*.css.map
+frontend/*.js.map
+frontend/*.css.d.ts
+frontend/.next
+frontend/out
+
+# Tests
+**/jest-cache
+**/coverage
+**/__snapshots__
+
+# Editor
+*.code-workspace
+*.swp
+*.swo
+
+# System Files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Debug
+dump.rdb
+
+# Package manager specific
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+shrinkwrap.yaml
