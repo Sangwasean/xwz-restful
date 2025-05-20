@@ -25,7 +25,7 @@ const BookingListPage = () => {
       header: "Parking Slot",
       accessor: "parkingSlot.number",
       cell: (row) => (
-        <Link to={`/parking-slots/${row.parkingSlot.id}`} className="text-blue-600 hover:text-blue-800">
+        <Link to={`/parking/${row.parkingSlot.id}`} className="text-blue-600 hover:text-blue-800">
           {row.parkingSlot.number}
         </Link>
       ),

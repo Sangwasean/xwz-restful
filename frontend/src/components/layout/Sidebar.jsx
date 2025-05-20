@@ -4,9 +4,9 @@ import { HomeIcon, TicketIcon, TruckIcon, CreditCardIcon, ParkingCircleIcon } fr
 const Sidebar = () => {
   const navItems = [
     { name: "Dashboard", path: "/", icon: HomeIcon },
-    { name: "Parking Slots", path: "/parking-slots", icon: ParkingCircleIcon },
+    { name: "Parking Slots", path: "/parking", icon: ParkingCircleIcon },
     { name: "Vehicles", path: "/vehicles", icon: TruckIcon },
-    { name: "Bookings", path: "/bookings", icon: TicketIcon },
+    { name: "Bookings", path: "/tickets", icon: TicketIcon },
     { name: "Payments", path: "/payments", icon: CreditCardIcon },
   ]
 

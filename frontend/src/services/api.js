@@ -2,7 +2,7 @@ import axios from "axios"
 
 // Create an Axios instance with default config
 const api = axios.create({
-  baseURL: "http://localhost:7654/api/v1",
+  baseURL: "http://localhost:9999/api/v1",
   headers: {
     "Content-Type": "application/json",
   },

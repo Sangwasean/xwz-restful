@@ -11,8 +11,7 @@ router.post('/', authMiddleware, vehicleController.createVehicle);
 // In vehicle.routes.ts
 router.get(
     "/",
-    authMiddleware,
-    roleMiddleware(["ADMIN"]), // Only admins can view all vehicles
+    authMiddleware,// Only admins can view all vehicles
     vehicleController.getAllVehicles
 );
 router.get('/:id', authMiddleware, vehicleController.getVehicleById);

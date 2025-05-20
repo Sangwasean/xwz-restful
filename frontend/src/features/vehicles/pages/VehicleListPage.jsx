@@ -14,8 +14,7 @@ const VehicleListPage = () => {
   const { data: vehicles, isLoading } = useAllVehicles()
   const [showAddForm, setShowAddForm] = useState(false)
   const [formData, setFormData] = useState({
-    plateNumber: "",
-    type: "",
+    plateNumber: ""
   })
   const [errors, setErrors] = useState({})
 
@@ -38,10 +37,6 @@ const VehicleListPage = () => {
       newErrors.plateNumber = "Plate number is required"
     }
 
-    if (!formData.type) {
-      newErrors.type = "Vehicle type is required"
-    }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -53,7 +48,7 @@ const VehicleListPage = () => {
 
     try {
       await createVehicleMutation.mutateAsync(formData)
-      setFormData({ plateNumber: "", type: "" })
+      setFormData({ plateNumber: "" })
       setShowAddForm(false)
     } catch (error) {
       if (error.response && error.response.data) {
@@ -73,11 +68,6 @@ const VehicleListPage = () => {
           {row.plateNumber}
         </Link>
       ),
-    },
-    {
-      header: "Type",
-      accessor: "type",
-      cell: (row) => <span className="capitalize">{row.type.toLowerCase()}</span>,
     },
     {
       header: "Added On",
@@ -133,7 +123,7 @@ const VehicleListPage = () => {
             )}
 
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4">
                 <FormField
                   label="Plate Number"
                   id="plateNumber"
@@ -141,23 +131,6 @@ const VehicleListPage = () => {
                   value={formData.plateNumber}
                   onChange={handleChange}
                   error={errors.plateNumber}
-                  required
-                />
-
-                <FormField
-                  label="Vehicle Type"
-                  id="type"
-                  name="type"
-                  type="select"
-                  options={[
-                    { value: "CAR", label: "Car" },
-                    { value: "MOTORCYCLE", label: "Motorcycle" },
-                    { value: "TRUCK", label: "Truck" },
-                    { value: "VAN", label: "Van" },
-                  ]}
-                  value={formData.type}
-                  onChange={handleChange}
-                  error={errors.type}
                   required
                 />
               </div>

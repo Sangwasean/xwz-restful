@@ -72,7 +72,6 @@ const VehicleDetailPage = () => {
             </div>
             <div>
               <h3 className="text-xl font-semibold">{vehicle.plateNumber}</h3>
-              <p className="text-gray-500 capitalize">{vehicle.type.toLowerCase()}</p>
             </div>
           </div>
 

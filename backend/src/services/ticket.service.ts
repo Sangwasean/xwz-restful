@@ -29,14 +29,22 @@ class TicketService {
             throw new NotFoundError("Vehicle not found");
          }
 
-         // Create the ticket
+         // Create the ticket with proper relation connections
          const ticket = await tx.ticket.create({
             data: {
-               parkingId: ticketData.parkingId,
-               vehicleId: ticketData.vehicleId,
+               parking: {
+                  connect: { id: ticketData.parkingId }
+               },
+               vehicle: {
+                  connect: { id: ticketData.vehicleId }
+               },
                startTime: ticketData.startTime ? new Date(ticketData.startTime) : new Date(),
                status: "ACTIVE",
             },
+            include: {
+               parking: true,
+               vehicle: true
+            }
          });
 
          // Mark parking as occupied

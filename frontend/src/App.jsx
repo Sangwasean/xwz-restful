@@ -44,7 +44,7 @@ function App() {
               }
             >
               <Route index element={<DashboardPage />} />
-              <Route path="parking-slots">
+              <Route path="parking">
                 <Route index element={<ParkingSlotListPage />} />
                 <Route path=":id" element={<ParkingSlotDetailPage />} />
               </Route>
@@ -52,7 +52,7 @@ function App() {
                 <Route index element={<VehicleListPage />} />
                 <Route path=":id" element={<VehicleDetailPage />} />
               </Route>
-              <Route path="bookings">
+              <Route path="tickets">
                 <Route index element={<BookingListPage />} />
                 <Route path="new" element={<CreateBookingPage />} />
                 <Route path=":id" element={<BookingDetailPage />} />

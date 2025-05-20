@@ -2,19 +2,19 @@ import { useQuery, useMutation, useQueryClient } from "react-query"
 import { parkingService } from "../../../services/parkingService"
 
 export const useAllParkingSlots = () => {
-  return useQuery(["parkingSlots"], () => parkingService.getAllParkingSlots(), {
+  return useQuery(["parking"], () => parkingService.getParkings(), {
     staleTime: 60000, // 1 minute
   })
 }
 
 export const useAvailableParkingSlots = () => {
-  return useQuery(["parkingSlots", "available"], () => parkingService.getAvailableParkingSlots(), {
+  return useQuery(["parking", "available"], () => parkingService.getAvailableParkings(), {
     staleTime: 30000, // 30 seconds
   })
 }
 
 export const useParkingSlot = (id) => {
-  return useQuery(["parkingSlots", id], () => parkingService.getParkingSlotById(id), {
+  return useQuery(["parking", id], () => parkingService.getParkingById(id), {
     enabled: !!id,
   })
 }
@@ -22,9 +22,9 @@ export const useParkingSlot = (id) => {
 export const useCreateParkingSlot = () => {
   const queryClient = useQueryClient()
 
-  return useMutation((parkingSlotData) => parkingService.createParkingSlot(parkingSlotData), {
+  return useMutation((parkingSlotData) => parkingService.createParking(parkingSlotData), {
     onSuccess: () => {
-      queryClient.invalidateQueries(["parkingSlots"])
+      queryClient.invalidateQueries(["parking"])
     },
   })
 }
@@ -32,10 +32,10 @@ export const useCreateParkingSlot = () => {
 export const useUpdateParkingSlot = () => {
   const queryClient = useQueryClient()
 
-  return useMutation(({ id, data }) => parkingService.updateParkingSlot(id, data), {
+  return useMutation(({ id, data }) => parkingService.updateParking(id, data), {
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries(["parkingSlots"])
-      queryClient.invalidateQueries(["parkingSlots", variables.id])
+      queryClient.invalidateQueries(["parking"])
+      queryClient.invalidateQueries(["parking", variables.id])
     },
   })
 }

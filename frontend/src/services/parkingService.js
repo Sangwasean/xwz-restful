@@ -1,32 +1,32 @@
 import api from "./api"
 
 export const parkingService = {
-  getAll: async () => {
+  getParkings: async () => {
     try {
-      const response = await api.get('/parking-slots');
+      const response = await api.get('/parking');
       return response.data;
     } catch (error) {
       console.error('Error fetching parking slots:', error);
       throw error;
     }
   },
-  getAvailableParkingSlots: async () => {
-    const response = await api.get("/parking-slots/available")
+  getAvailableParking: async () => {
+    const response = await api.get("/parking/available")
     return response.data
   },
 
-  getParkingSlotById: async (id) => {
-    const response = await api.get(`/parking-slots/${id}`)
+  getParkingById: async (id) => {
+    const response = await api.get(`/parking/${id}`)
     return response.data
   },
 
-  createParkingSlot: async (parkingSlotData) => {
-    const response = await api.post("/parking-slots", parkingSlotData)
+  createParking: async (parkingSlotData) => {
+    const response = await api.post("/parking", parkingSlotData)
     return response.data
   },
 
-  updateParkingSlot: async (id, parkingSlotData) => {
-    const response = await api.patch(`/parking-slots/${id}`, parkingSlotData)
+  updateParking: async (id, parkingSlotData) => {
+    const response = await api.patch(`/parking/${id}`, parkingSlotData)
     return response.data
   },
 }

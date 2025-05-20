@@ -24,16 +24,8 @@ const LoginPage = () => {
         localStorage.setItem("token", data.token)
         localStorage.setItem("user", JSON.stringify(data.user))
         
-        // Immediate verification
-        const user = authService.getCurrentUser()
-        const isAuth = authService.isAuthenticated()
-        
-        console.log('Post-login verification:', { user, isAuth })
-        
-        if (isAuth && user) {
-          console.log('Navigation triggered from onSuccess')
-          navigate('/', { replace: true }) // Added replace option
-        }
+        // Force a full page reload to ensure all auth state is properly initialized
+        window.location.href = '/'
       }
     },
     onError: (error) => {
@@ -46,10 +38,9 @@ const LoginPage = () => {
     }
   })
 
-  // Handle potential navigation issues
+  // Redirect if already logged in
   useEffect(() => {
-    // Check if we're already authenticated (in case of page refresh)
-    if (authService.isAuthenticated() && authService.getCurrentUser()) {
+    if (authService.isAuthenticated()) {
       navigate('/', { replace: true })
     }
   }, [navigate])
@@ -72,7 +63,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validateForm()) return
-    loginMutation.mutate(formData) // Using mutate instead of mutateAsync
+    loginMutation.mutate(formData)
   }
 
   return (

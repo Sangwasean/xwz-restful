@@ -2,13 +2,13 @@ import { useQuery, useMutation, useQueryClient } from "react-query"
 import { bookingService } from "../../../services/bookingService"
 
 export const useAllBookings = () => {
-  return useQuery(["bookings"], () => bookingService.getAllBookings(), {
+  return useQuery(["tickets"], () => bookingService.getAllBookings(), {
     staleTime: 60000, // 1 minute
   })
 }
 
 export const useBooking = (id) => {
-  return useQuery(["bookings", id], () => bookingService.getBookingById(id), {
+  return useQuery(["tickets", id], () => bookingService.getBookingById(id), {
     enabled: !!id,
   })
 }
@@ -18,8 +18,8 @@ export const useCreateBooking = () => {
 
   return useMutation((bookingData) => bookingService.createBooking(bookingData), {
     onSuccess: () => {
-      queryClient.invalidateQueries(["bookings"])
-      queryClient.invalidateQueries(["parkingSlots"])
+      queryClient.invalidateQueries(["tickets"])
+      queryClient.invalidateQueries(["parking"])
     },
   })
 }
@@ -29,8 +29,8 @@ export const useExtendBooking = () => {
 
   return useMutation(({ id, data }) => bookingService.extendBooking(id, data), {
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries(["bookings"])
-      queryClient.invalidateQueries(["bookings", variables.id])
+      queryClient.invalidateQueries(["tickets"])
+      queryClient.invalidateQueries(["tickets", variables.id])
     },
   })
 }
@@ -40,8 +40,8 @@ export const useCancelBooking = () => {
 
   return useMutation((id) => bookingService.cancelBooking(id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(["bookings"])
-      queryClient.invalidateQueries(["parkingSlots"])
+      queryClient.invalidateQueries(["tickets"])
+      queryClient.invalidateQueries(["parking"])
     },
   })
 }
